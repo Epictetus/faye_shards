@@ -83,7 +83,7 @@ or
 
 Extensions can be passed as an additional hash after <tt>data</tt>
 
-How to push to global channel and more information about gem can be found here: TODO.
+How to push to global channel and more information about gem can be found here: .
 
 == Roadmap / TODO
 * UT
