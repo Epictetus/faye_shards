@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
     "README.rdoc",
     "Rakefile",
     "VERSION",
+    "examples/config/faye.yml",
     "faye_shards.gemspec",
     "lib/faye_shard/shard.rb",
     "lib/faye_shard/user/faye.rb",
