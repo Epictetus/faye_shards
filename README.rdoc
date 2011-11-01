@@ -64,7 +64,7 @@ So, in my example for production I have 2 Faye instances listening to ports 4200
 == Usage
 
 URL for Faye's client-side JS (unless you store it somewhere on diff storage) is returned by this methos:
-  FayeShards.shard(current_user.id).js_url
+  FayeShards.shard(current_user.id).js_url(request.ssl?)
 
 Module <code>FayeShard::User::Faye</code> which can be included to your User model provides method <tt>faye_channel</tt> which returns unique channel id for user. If you do not want to include module to your model - you need to manage unique channels for users yourself.
 
