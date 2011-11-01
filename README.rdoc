@@ -1,0 +1,96 @@
+= faye_shards
+
+* Provides some useful methods to push data from Ruby on Rails to Faye (by jcoglan, http://faye.jcoglan.com).
+* Designed to work with both HTTP and HTTPS connections (RoR pushes via HTTP, client can be connected using HTTPS). Check out http://rails-alex.blogspot.com/2011/10/ssl-support-for-high-loaded-faye-nodejs.html to see how to configure Stunnel in front of Faye to enable HTTPS.
+
+== Comments
+
+This gem will be helpful if you are planning to run more than one instance of Faye (doesn't matter on 1 server or on many).
+If users in your application are subscribed to unique channels (eg. "/#{current_user.id}") - faye_shards will fit all your needs.
+If you have global channels (which you use widely) and many instances of Faye - this game is not a perfect solution for you, but it will work.
+It doesn't matter if you use Redis as data storage or not.
+
+Check out these posts/discussions about Faye sharding:
+* http://rails-alex.blogspot.com/2011/10/high-performance-publishsubscribe.html
+* https://groups.google.com/forum/#!topic/faye-users/1B6pSKBZKFQ
+
+== Installing
+
+Simply add
+
+<code> gem 'faye_shards'</code>
+
+to your Gemfile
+
+== Configuration
+
+All you need to configure gem is to create file faye.yml in config folder. Here is an example:
+
+
+    development:
+      shards:
+        -
+          port: 42000
+          host: 127.0.0.1
+        -
+          port: 42001
+          host: 127.0.0.1
+    production:
+      shards:
+        -
+          local_host: 10.1.1.1
+          port: 42000
+          host: server1.myapp.com
+          secured: true
+          secured_port: 32000
+        -
+          local_host: 10.1.1.1
+          port: 42001
+          host: server1.myapp.com
+          secured: true
+          secured_port: 32001
+
+Required options:
+* <tt>host</tt> - IP or domain name where instance of Faye is running
+* <tt>port</tt> - port, instance of Faye is listening to
+
+Optional params:
+* <tt>local_host</tt> - local IP of server. Used for pushes from Rails instead of <tt>host</tt> if specified. Just to communicate via local interfaces.
+* <tt>secured</tt> - <tt>true/false</tt>. Specifies if there is a SSL Offloading configured for Faye instance.
+* <tt>secured_port</tt> - Required if secured is set to <tt>true</tt>.
+
+So, in my example for production I have 2 Faye instances listening to ports 42000 and 42001 using HTTP + Stunnel configured to listen 32000 and 32001.
+
+== Usage
+
+URL for Faye's client-side JS (unless you store it somewhere on diff storage) is returned by this methos:
+  FayeShards.shard(current_user.id).js_url
+
+Module <code>FayeShard::User::Faye</code> which can be included to your User model provides method <tt>faye_channel</tt> which returns unique channel id for user. If you do not want to include module to your model - you need to manage unique channels for users yourself.
+
+On client side, subscription should look like:
+  client = new Faye.Client(<%= raw FayeShards.shard(current_user.id).url(request.ssl?).inspect %>);
+  fayeSubscription = client.subscribe(<%= raw current_user.faye_channel.inspect %>, function(data) {});
+
+or
+  fayeSubscription = client.subscribe(<%= raw my_own_method_for_channel_id.inspect %>, function(data) {});
+
+
+Pushing data to user's channel also depends on your decision to include module <code>FayeShard::User::Faye</code>. So, 2 options:
+  current_user.push_to_faye(data) # Sends data to channel, returned by current_user.faye_channel
+or
+  FayeShards.shard(1).push(my_own_method_for_channel_id, data)
+
+Extensions can be passed as an additional hash after <tt>data</tt>
+
+How to push to global channel and more information about gem can be found here: TODO.
+
+== Roadmap / TODO
+* GOD scripts to start/monitor Faye instances based on faye.yml
+
+
+== Copyright
+
+Copyright (c) 2011 Alex Kazeko. See LICENSE.txt for
+further details.
+

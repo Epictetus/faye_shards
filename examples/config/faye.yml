@@ -1,0 +1,25 @@
+development:
+  shards:
+    -
+      port: 42000
+      host: 127.0.0.1
+      secured: false
+    -
+      port: 42001
+      host: 127.0.0.1
+      secured: false
+
+production:
+  shards:
+    -
+      local_host: 10.1.1.1
+      port: 42000
+      host: server1.myapp.com
+      secured: true
+      secured_port: 32000
+    -
+      local_host: 10.1.1.1
+      port: 42001
+      host: server1.myapp.com
+      secured: true
+      secured_port: 32001
