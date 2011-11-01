@@ -30,7 +30,7 @@ class FayeShards
     #  Returns all configured shards
     #
     def all_shards
-      @shards ||= config["shards"].map{ |shard_config| FayeShard::Shard.new(shard_config) }
+      @all_shards ||= config["shards"].map{ |shard_config| FayeShard::Shard.new(shard_config) }
     end
 
   end

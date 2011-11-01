@@ -79,7 +79,7 @@ or
 Pushing data to user's channel also depends on your decision to include module <code>FayeShard::User::Faye</code>. So, 2 options:
   current_user.push_to_faye(data) # Sends data to channel, returned by current_user.faye_channel
 or
-  FayeShards.shard(1).push(my_own_method_for_channel_id, data)
+  FayeShards.shard(current_user.id).push(my_own_method_for_channel_id, data)
 
 Extensions can be passed as an additional hash after <tt>data</tt>
 
