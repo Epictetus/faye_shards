@@ -24,8 +24,10 @@ module FayeShard
 
     #  Returns default client JS url
     #
-    def js_url
-      url + '.js'
+    #  * <tt>https</tt>:: Specifies whether to use SSL connection or not
+    #
+    def js_url(https = false)
+      url(https) + '.js'
     end
 
     #  Local url, needed for RoR <-> Faye communication
