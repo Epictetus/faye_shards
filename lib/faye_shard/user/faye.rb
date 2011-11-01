@@ -19,7 +19,13 @@ module FayeShard
       #  * <tt>ext</tt>::     Faye extensions, eg. auth_token
       #
       def push_to_faye(data, ext = {})
-        FayeShards.shard(self.id).push(self.faye_channel, data, ext)
+        faye_shard.push(self.faye_channel, data, ext)
+      end
+
+      # Returns shard for this user
+      #
+      def faye_shard
+        FayeShards.shard(self.id)
       end
 
     end
