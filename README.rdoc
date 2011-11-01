@@ -86,8 +86,9 @@ Extensions can be passed as an additional hash after <tt>data</tt>
 How to push to global channel and more information about gem can be found here: TODO.
 
 == Roadmap / TODO
+* UT
+* Add example Rails app which uses faye_shards.
 * GOD scripts to start/monitor Faye instances based on faye.yml
-
 
 == Copyright
 
